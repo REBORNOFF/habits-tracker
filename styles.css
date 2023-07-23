@@ -10,6 +10,7 @@ h1, h2, h3, h4, h5, h6 {
 body {
     background-color: #F3F6FD;
     font-family: 'Comfortaa', cursive;
+    font-weight: 400;
     margin: 0;
 }
 
@@ -89,12 +90,12 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 30px;
 }
 
 .header__title {
     color: #000;
     font-size: 30px;
-    font-weight: 400;
     line-height: calc(33 / 30 * 100%);
 }
 
@@ -113,14 +114,12 @@ body {
 .progress__title {
     color: #232360;
     font-size: 14px;
-    font-weight: 400;
     line-height: calc(16 / 14 * 100%);
 }
 
 .progress__percent {
     color: #768396;
     font-size: 12px;
-    font-weight: 400;
     line-height: calc(13 / 12 * 100%);
 }
 
@@ -138,4 +137,92 @@ body {
     background: #5051F9;
     width: 80%;
     height: 5px;
+}
+
+/* main */
+
+.habit {
+    display: flex;
+    align-items: center;
+    background: #FFF;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+
+.habit__day {
+    background: #FBFAFF;
+    border-right: 1px solid #E7EBFB;
+    border-radius: 10px 0 0 10px;
+    color: #000;
+    font-size: 14px;
+    line-height: calc(16 / 14 * 100%);
+    padding: 21px 40px;
+    min-width: 150px;
+    text-align: center;
+}
+
+.habit__comment {
+    color: #23235F;
+    font-size: 16px;
+    line-height: calc(18 / 16 * 100%);
+    padding: 20px 25px;
+}
+
+.habit__remove {
+    background: none;
+    border: none;
+    border-radius: 5px;
+    margin-left: auto;
+    margin-right: 16px;
+    padding: 2px;
+    cursor: pointer;
+}
+
+.habit__remove:hover {
+    background: #f6f7ff;
+}
+
+.habit__input-icon {
+    position: absolute;
+    top: 10px;
+    left: 46px;
+}
+
+.habit__input {
+    font-family: 'Comfortaa', cursive;
+    font-size: 14px;
+    font-weight: 400;
+    flex: 1;
+    line-height: calc(16 / 14 * 100%);
+    border-radius: 9px;
+    border: 1px solid #E7EBFB;
+    background: #FFF;
+    padding: 12px 20px 12px 46px;
+}
+
+.habit__input::placeholder {
+    color: #8899A8;
+}
+
+.habit__form {
+    position: relative;
+    display: flex;
+    gap: 14px;
+    width: 100%;
+    padding: 0 16px 0 25px;
+}
+
+.habit__done-button {
+    border-radius: 9px;
+    background: #EDECFE;
+    border: none;
+    padding: 14px 30px;
+    font-size: 13px;
+    line-height: calc(14 / 13 * 100%);
+    color: #5051F9;
+    cursor: pointer;
+}
+
+.habit__done-button:hover {
+    background: #f6f7ff;
 }
