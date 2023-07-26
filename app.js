@@ -4,7 +4,16 @@ let habits = [];
 const HABIT_KEY = 'HABIT_KEY';
 
 const page = {
-	menu: document.querySelector('.menu__list')
+	menu: document.querySelector('.menu__list'),
+	header: {
+		headerTitle: document.querySelector('.header__title'),
+		progressPercent: document.querySelector('.progress__percent'),
+		progressCoverBar: document.querySelector('.progress__cover-bar')
+	},
+	content: {
+		wrapper: document.querySelector('.main__wrapper'),
+		nextDay: document.querySelector('.habit__day')
+	}
 };
 
 function loadData() {
@@ -21,10 +30,6 @@ function saveData() {
 }
 
 function rerenderMenu(activeHabit) {
-	if (!activeHabit) {
-		return;
-	}
-
 	for (const habit of habits) {
 		const existed = document.querySelector(`[menu-habit-id="${habit.id}"]`);
 
@@ -53,9 +58,44 @@ function rerenderMenu(activeHabit) {
 	}
 }
 
+function rerenderHeader(activeHabit) {
+	page.header.headerTitle.innerText = activeHabit.name;
+	const progress = activeHabit.days.length / activeHabit.target > 1
+		? 100
+		: (activeHabit.days.length / activeHabit.target) * 100;
+	page.header.progressPercent.innerText = progress.toFixed(0) + '%';
+	page.header.progressCoverBar.style.width = `${progress}%`;
+}
+
+function rerenderContent(activeHabit) {
+	page.content.wrapper.innerHTML = '';
+
+	for (const index in activeHabit.days) {
+		const element = document.createElement('div');
+		element.classList.add('habit');
+		element.innerHTML = `
+			<div class="habit__day">День ${Number(index) + 1}</div>
+      		<div class="habit__comment">${activeHabit.days[index].comment}</div>
+        	<button class="habit__remove">
+        		<img class="habit__remove-button" src="/images/delete.svg" alt="Удалить комментарий">
+        	</button>
+		`;
+		page.content.nextDay.innerText = `День ${activeHabit.days.length + 1}`;
+		page.content.wrapper.appendChild(element);
+	}
+
+}
+
 function rerender(activeHabitId) {
 	const activeHabit = habits.find(habit => habit.id === activeHabitId);
+
+	if (!activeHabit) {
+		return;
+	}
+
 	rerenderMenu(activeHabit);
+	rerenderHeader(activeHabit);
+	rerenderContent(activeHabit);
 }
 
 (() => {

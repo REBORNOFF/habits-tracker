@@ -135,8 +135,8 @@ body {
     position: absolute;
     border-radius: 4px;
     background: #5051F9;
-    width: 80%;
     height: 5px;
+    transition: all .4s;
 }
 
 /* main */
