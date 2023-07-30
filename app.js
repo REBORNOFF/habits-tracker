@@ -1,7 +1,8 @@
 'use strict';
 
-let habits = [];
 const HABIT_KEY = 'HABIT_KEY';
+let habits = [];
+let globalActiveHabitId;
 
 const page = {
 	menu: document.querySelector('.menu__list'),
@@ -13,6 +14,9 @@ const page = {
 	content: {
 		wrapper: document.querySelector('.main__wrapper'),
 		nextDay: document.querySelector('.habit__day')
+	},
+	form: {
+		habitForm: document.querySelector('.habit__form')
 	}
 };
 
@@ -60,9 +64,10 @@ function rerenderMenu(activeHabit) {
 
 function rerenderHeader(activeHabit) {
 	page.header.headerTitle.innerText = activeHabit.name;
-	const progress = activeHabit.days.length / activeHabit.target > 1
-		? 100
-		: (activeHabit.days.length / activeHabit.target) * 100;
+	const progress =
+		activeHabit.days.length / activeHabit.target > 1
+			? 100
+			: (activeHabit.days.length / activeHabit.target) * 100;
 	page.header.progressPercent.innerText = progress.toFixed(0) + '%';
 	page.header.progressCoverBar.style.width = `${progress}%`;
 }
@@ -76,18 +81,18 @@ function rerenderContent(activeHabit) {
 		element.innerHTML = `
 			<div class="habit__day">День ${Number(index) + 1}</div>
       		<div class="habit__comment">${activeHabit.days[index].comment}</div>
-        	<button class="habit__remove">
+        	<button class="habit__remove" onclick="removeDays(${index})">
         		<img class="habit__remove-button" src="/images/delete.svg" alt="Удалить комментарий">
         	</button>
 		`;
 		page.content.nextDay.innerText = `День ${activeHabit.days.length + 1}`;
 		page.content.wrapper.appendChild(element);
 	}
-
 }
 
 function rerender(activeHabitId) {
 	const activeHabit = habits.find(habit => habit.id === activeHabitId);
+	globalActiveHabitId = activeHabitId;
 
 	if (!activeHabit) {
 		return;
@@ -96,6 +101,51 @@ function rerender(activeHabitId) {
 	rerenderMenu(activeHabit);
 	rerenderHeader(activeHabit);
 	rerenderContent(activeHabit);
+}
+
+function addDays(event) {
+	event.preventDefault();
+
+	const form = event.target;
+	const data = new FormData(form);
+	const comment = data.get('comment');
+
+	form['comment'].classList.remove('error');
+
+	if (!comment) {
+		form['comment'].classList.add('error');
+	}
+
+	habits = habits.map(habit => {
+		if (habit.id === globalActiveHabitId) {
+			return {
+				...habit,
+				days: habit.days.concat([{ comment }])
+			};
+		}
+		return habit;
+	});
+
+	saveData();
+	form['comment'].value = '';
+	rerender(globalActiveHabitId);
+}
+
+page.form.habitForm.addEventListener('submit', addDays);
+
+function removeDays(activeIndex) {
+	habits = habits.map(habit => {
+		if (habit.id === globalActiveHabitId) {
+			habit.days.splice(activeIndex, 1);
+			return {
+				...habit,
+				days: habit.days
+			};
+		}
+		return habit;
+	});
+	saveData();
+	rerender(globalActiveHabitId);
 }
 
 (() => {

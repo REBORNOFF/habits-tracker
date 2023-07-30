@@ -204,12 +204,21 @@ body {
     color: #8899A8;
 }
 
+.habit__input:focus {
+    outline: none;
+}
+
 .habit__form {
     position: relative;
     display: flex;
     gap: 14px;
     width: 100%;
     padding: 0 16px 0 25px;
+}
+
+.error {
+    border: 1px solid #ffb1b1;
+    box-shadow: 0 0 6px 0 rgb(117, 11, 11);
 }
 
 .habit__done-button {
